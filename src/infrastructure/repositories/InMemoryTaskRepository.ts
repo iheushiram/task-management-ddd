@@ -11,6 +11,10 @@ export class InMemoryTaskRepository implements TaskRepository {
     return this.tasks.get(id.getValue()) || null
   }
 
+  async findAll(): Promise<Task[]> {
+    return Array.from(this.tasks.values())
+  }
+
   async findByProjectId(projectId: ProjectId): Promise<Task[]> {
     // 実際の実装では、TaskとProjectの関連を適切に管理する必要があります
     return Array.from(this.tasks.values()).filter((task) => {

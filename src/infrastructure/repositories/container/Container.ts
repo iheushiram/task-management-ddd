@@ -3,6 +3,8 @@ import { InMemoryTaskRepository } from "../InMemoryTaskRepository"
 import { TaskDomainService } from "../../../domain/task/TaskDomainService"
 import { CreateTaskUseCase } from "../../../application/task/CreateTaskUseCase"
 import { UpdateTaskStatuUseCase } from "../../../application/task/UpdateTaskStatusUseCase"
+import { ListTasksUseCase } from "../../../application/task/ListTasksUseCase"
+import { GetTaskUseCase } from "../../../application/task/GetTaskUseCase"
 
 interface Container {
   get<T>(token: symbol): T
@@ -32,6 +34,8 @@ export const TOKENS = {
   TaskDomainService: Symbol("TaskDomainService"),
   CreateTaskUseCase: Symbol("CreateTaskUseCase"),
   UpdateTaskStatusUseCase: Symbol("UpdateTaskStatusUseCase"),
+  ListTasksUseCase: Symbol("ListTasksUseCase"),
+  GetTaskUseCase: Symbol("GetTaskUseCase"),
 } as const
 
 export function createContainer(): Container {
@@ -55,6 +59,21 @@ export function createContainer(): Container {
       container.get(TOKENS.ProjectRepository),
       container.get(TOKENS.TaskDomainService),
     ),
+  )
+
+  container.bind(
+    TOKENS.UpdateTaskStatusUseCase,
+    new UpdateTaskStatuUseCase(container.get(TOKENS.TaskRepository)),
+  )
+
+  container.bind(
+    TOKENS.ListTasksUseCase,
+    new ListTasksUseCase(container.get(TOKENS.TaskRepository)),
+  )
+
+  container.bind(
+    TOKENS.GetTaskUseCase,
+    new GetTaskUseCase(container.get(TOKENS.TaskRepository)),
   )
 
   return container

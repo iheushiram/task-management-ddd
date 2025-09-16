@@ -5,6 +5,7 @@ import { UserId } from "../user/UserId"
 
 export interface TaskRepository {
   findById(id: TaskId): Promise<Task | null>
+  findAll(): Promise<Task[]>
   findByProjectId(projectId: ProjectId): Promise<Task[]>
   findByAssigneeId(assigneeId: UserId): Promise<Task[]>
   save(task: Task): Promise<void>

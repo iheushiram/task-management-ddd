@@ -22,7 +22,7 @@ export class CreateTaskUseCase {
     private taskDomainService: TaskDomainService,
   ) {}
 
-  async execute(command: CreateTaskCommand): Promise<{ taskId: string }> {
+  async execute(command: CreateTaskCommand): Promise<Task> {
     // 値オブジェクトの作成
     const title = new TaskTitle(command.title)
     const assigneeId = new UserId(command.assigneeId)
@@ -56,6 +56,6 @@ export class CreateTaskUseCase {
     await this.taskRepository.save(task)
     await this.projectRepository.save(project)
 
-    return { taskId: task.getId().getValue() }
+    return task
   }
 }
